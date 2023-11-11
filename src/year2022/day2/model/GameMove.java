@@ -8,4 +8,8 @@ public abstract class GameMove {
     }
 
     public abstract int compareTo(GameMove gameMove);
+
+    public abstract GameMove getWinningOpponingMove();
+
+    public abstract GameMove getLosingOpponingMove();
 }

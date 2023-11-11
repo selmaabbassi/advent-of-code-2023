@@ -38,8 +38,8 @@ public class DayTwo {
                 String player1 = split[0];
                 String player2 = split[1];
 
-                GameMove moveP1 = GameMoveMapper.mapTo(player1);
-                GameMove moveP2 = GameMoveMapper.mapTo(player2);
+                GameMove moveP1 = GameMoveMapper.mapToForPlayerOne(player1);
+                GameMove moveP2 = GameMoveMapper.mapToForPlayerTwo(moveP1, player2);
 
                 System.out.println("PLAYER 1: " + player1 + " " + moveP1.getClass().getSimpleName() + " " + moveP1.getScore());
                 System.out.println("PLAYER 2: " + player2 + " " + moveP2.getClass().getSimpleName() + " " + moveP2.getScore());

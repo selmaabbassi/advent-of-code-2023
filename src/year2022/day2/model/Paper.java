@@ -17,4 +17,14 @@ public class Paper extends GameMove {
             throw new ClassCastException();
         }
     }
+
+    @Override
+    public GameMove getWinningOpponingMove() {
+        return new Scissors();
+    }
+
+    @Override
+    public GameMove getLosingOpponingMove() {
+        return new Rock();
+    }
 }

@@ -1,4 +1,4 @@
-package year2022;
+package year2022.day1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class DayOnePartOne {
     public static void main(String[] args) {
-        Path filePath = Path.of("src/year2022/d1.txt");
+        Path filePath = Path.of("src/year2022/day1/d1.txt");
 
         try (BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)) {
             String line;

@@ -6,4 +6,6 @@ public abstract class GameMove {
     public int getScore() {
         return score;
     }
+
+    public abstract int compareTo(GameMove gameMove);
 }

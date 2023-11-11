@@ -24,6 +24,6 @@ public class GameMoveMapper {
             return new Scissors();
         }
 
-        throw new RuntimeException();
+        throw new ClassCastException("Can't create GameMove object from " + value);
     }
 }

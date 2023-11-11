@@ -34,51 +34,35 @@ public class DayTwo {
             int playerTwoScore = 0;
 
             while ((line = reader.readLine()) != null) {
-//                System.out.println(line);
                 String[] split = line.split("\\s+");
                 String player1 = split[0];
                 String player2 = split[1];
 
-//                System.out.println("P1: " + player1);
-//                System.out.println("P2: " + player2);
-//                System.out.println("" +
-//                        "");
+                GameMove moveP1 = GameMoveMapper.mapTo(player1);
+                GameMove moveP2 = GameMoveMapper.mapTo(player2);
 
-                GameMove gameMove_p1 = GameMoveMapper.mapTo(player1);
-                GameMove gameMove_p2 = GameMoveMapper.mapTo(player2);
+                System.out.println("PLAYER 1: " + player1 + " " + moveP1.getClass().getSimpleName() + " " + moveP1.getScore());
+                System.out.println("PLAYER 2: " + player2 + " " + moveP2.getClass().getSimpleName() + " " + moveP2.getScore());
 
-                Player p1 = new Player(gameMove_p1);
-                Player p2 = new Player(gameMove_p2);
+                Player p1 = new Player(moveP1);
+                Player p2 = new Player(moveP2);
 
                 RoundScore roundScore = new RoundScore(p1, p2);
 
+                roundScore.calculateWinner();
 
-                //round[0] -> p1
-                //round[1] -> p2
+                System.out.println("PLAYER 1 RESULT: " + roundScore.player1.roundScore);
+                System.out.println("PLAYER 2 RESULT: " + roundScore.player2.roundScore);
 
-                //metod som ger mig vem som vann och hur mycket båda har fått i poäng
-
-                // Class RoundScore
-                // Player1 -> hasWon (false)
-                //         -> roundScore 0
-                // Player2 -> hasWon (true)
-                //         -> roundScore 6 + 1 = 7
-
-                //roundscore.getPlayer1.roundscore = 0
-                //roundscore.getPlayer2.roundscore = 7
-
-                calculateScore(player1, player2);
+                playerOneScore += roundScore.player1.roundScore;
+                playerTwoScore += roundScore.player2.roundScore;
             }
+
+            System.out.println("P1: " + playerOneScore);
+            System.out.println("P2: " + playerTwoScore);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-    private static void calculateScore(String player1, String player2) {
-
-    }
-
-
 }

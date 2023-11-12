@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static year2022.day3.Alphabet.getScoresMap;
 
-public class DayThree {
+public class DayThreePartOne {
 
     public static void main(String[] args) {
         Path filePath = Path.of("src/year2022/day3/d3.txt");

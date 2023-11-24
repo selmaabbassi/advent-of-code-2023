@@ -15,11 +15,8 @@ public class DayFour {
 
         try (BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)) {
             String line;
-
-
             while ((line = reader.readLine()) != null) {
                 Pair pair = new Pair(line);
-
                 if(pair.fullyOverlaps()) {
                     counter++;
                 }

@@ -17,7 +17,7 @@ public class DayFour {
             String line;
             while ((line = reader.readLine()) != null) {
                 Pair pair = new Pair(line);
-                if(pair.fullyOverlaps()) {
+                if(pair.anyOverlaps()) {
                     counter++;
                 }
             }

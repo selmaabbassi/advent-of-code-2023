@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 public class DayFive {
 
@@ -19,7 +18,6 @@ public class DayFive {
 
             while ((line = reader.readLine()) != null) {
                 sorter.sortCrates(line);
-
             }
 
             System.out.println(sorter.getTopOfStacks().toString());

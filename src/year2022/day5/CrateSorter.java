@@ -1,7 +1,6 @@
 package year2022.day5;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -20,11 +19,17 @@ public class CrateSorter {
         int stackToMoveFromIndex = moves[1];
         int stackToMoveToIndex = moves[2];
 
-        for (int i = 0; i < numberOfCrates; i++) {
-            Stack<String> stackToMoveFrom = stackInitiator.stacks.get(stackToMoveFromIndex-1);
-            Stack<String> stackToMoveTo = stackInitiator.stacks.get(stackToMoveToIndex-1);
+        List<String> cratesToMove = new ArrayList<>();
 
-            stackToMoveTo.push(stackToMoveFrom.pop());
+        for (int i = 0; i < numberOfCrates; i++) {
+            Stack<String> stackToMoveFrom = stackInitiator.stacks.get(stackToMoveFromIndex - 1);
+            cratesToMove.add(stackToMoveFrom.pop());
+        }
+
+        Stack<String> stackToMoveTo = stackInitiator.stacks.get(stackToMoveToIndex - 1);
+
+        for (int i = cratesToMove.size() - 1; i >= 0; i--) {
+            stackToMoveTo.push(cratesToMove.get(i));
         }
     }
 

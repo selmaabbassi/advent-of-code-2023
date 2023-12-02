@@ -1,7 +1,9 @@
 package year2023.day2;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class Game {
 
@@ -11,12 +13,23 @@ public class Game {
     final static int GREEN_MAX = 13;
     final static int BLUE_MAX = 14;
 
+    /* Highest cubes in this game -> Minimum required amount of cubes for this game to be possible */
+    private int highestRedCube;
+    private int highestBlueCube;
+    private int highestGreenCube;
+
     public Game(String line) {
         initializeGame(line);
     }
 
     public boolean containsCubesHigherThanMax() {
-        return subsets.stream().anyMatch(subset -> subset.cubes.stream().anyMatch(cube -> cube.isHigherThanMax));
+        return subsets.stream()
+                .anyMatch(subset -> subset.getCubes().stream()
+                        .anyMatch(cube -> cube.isHigherThanMax));
+    }
+
+    public int getPowerOfHighestCubes() {
+        return highestBlueCube * highestGreenCube * highestRedCube;
     }
 
     private void initializeGame(String line) {
@@ -32,5 +45,32 @@ public class Game {
         for (String subset : subsetAsString) {
             subsets.add(new Subset(subset.trim()));
         }
+
+        setHighestCubes();
+    }
+
+    private void setHighestCubes() {
+        setMaxRedCube();
+        setMaxBlueCube();
+        setMaxGreenCube();
+    }
+
+    private void setMaxRedCube() {
+        highestRedCube = getHighestCube("red").amount;
+    }
+
+    private void setMaxBlueCube() {
+        highestBlueCube = getHighestCube("blue").amount;
+    }
+
+    private void setMaxGreenCube() {
+        highestGreenCube = getHighestCube("green").amount;
+    }
+
+    private Cube getHighestCube(String matcher) {
+        List<Cube> cubes = subsets.stream().flatMap(subset -> subset.getCubes().stream()
+                .filter(cube -> cube.color.equals(matcher))).toList();
+        Optional<Cube> highestCube = cubes.stream().max(Comparator.comparingInt(cube -> cube.amount));
+        return highestCube.orElse(null);
     }
 }

@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Subset {
-
-    List<Cube> cubes = new ArrayList<>();
+    private final List<Cube> cubes = new ArrayList<>();
 
     public Subset(String subsetAsString) {
         setCubes(subsetAsString);
     }
 
+    public List<Cube> getCubes() {
+        return cubes;
+    }
+
     private void setCubes(String subsetAsString) {
         String[] cubesAsString = subsetAsString.split(",");
-        for (String cube: cubesAsString) {
+        for (String cube : cubesAsString) {
             cubes.add(new Cube(cube.trim()));
         }
     }

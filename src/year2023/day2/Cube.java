@@ -28,11 +28,4 @@ public class Cube {
             default -> throw new IllegalArgumentException("Invalid color: " + color);
         }
     }
-
-    @Override
-    public String toString() {
-        return "Cube amount : " + amount + " Cube color: " + color;
-    }
-
-
 }

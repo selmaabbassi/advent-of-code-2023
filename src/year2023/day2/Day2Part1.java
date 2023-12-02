@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Day2 {
+public class Day2Part1 {
 
     public static void main(String[] args) {
         Path filePath = Path.of("src/year2023/day2/d2.txt");

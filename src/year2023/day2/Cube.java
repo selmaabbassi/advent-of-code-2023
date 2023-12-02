@@ -7,6 +7,9 @@ public class Cube {
     int amount;
     String color;
     boolean isHigherThanMax = false;
+    final static int RED_MAX = 12;
+    final static int GREEN_MAX = 13;
+    final static int BLUE_MAX = 14;
 
     public Cube(String cubeAsString) {
         setCube(cubeAsString);

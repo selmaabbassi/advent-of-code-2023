@@ -1,6 +1,7 @@
 package year2023.day3;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LinkedSchematics {
@@ -10,6 +11,7 @@ public class LinkedSchematics {
 
         public LinkedSchematics() {
                 schematics = new ArrayList<>();
+                parts = new ArrayList<>();
         }
 
         public void append(String line) {
@@ -25,6 +27,10 @@ public class LinkedSchematics {
 
         public void print() {
                 schematics.forEach(SchematicNode::print);
+        }
+
+        public void printParts() {
+                System.out.println(Arrays.toString(parts.toArray()));
         }
 
         public void linkSchematicNodes() {
@@ -44,5 +50,13 @@ public class LinkedSchematics {
                         }
 
                 }
+        }
+
+        public void findParts() {
+                schematics.forEach(node -> parts.addAll(node.findParts()));
+        }
+
+        public List<Integer> getParts() {
+                return parts;
         }
 }

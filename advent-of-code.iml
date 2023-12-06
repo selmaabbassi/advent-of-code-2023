@@ -7,20 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../JARs/commons-lang3-3.14.0-bin/commons-lang3-3.14.0/commons-lang3-3.14.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.ideaLibSources/commons-lang3-3.14.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="commons-lang3-3.14.0" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
-    <option name="uniqueId" value="9a6aeced-9429-4040-ad8a-aca66de9cafd" />
+    <option name="uniqueId" value="5dad176d-5dd5-4ed3-ba78-9e4e313391f3" />
   </component>
 </module>

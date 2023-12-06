@@ -21,9 +21,9 @@ public class Day3Part1 {
                         }
 
                         schematics.linkSchematicNodes();
+
                         schematics.findParts();
                         List<Integer> parts = schematics.getParts();
-
                         schematics.printParts();
 
                         Integer sum = parts.stream().reduce(0, Integer::sum);

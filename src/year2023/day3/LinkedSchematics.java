@@ -30,7 +30,7 @@ public class LinkedSchematics {
         }
 
         public void printParts() {
-                System.out.println(Arrays.toString(parts.toArray()));
+                System.out.println("Parts found: " + Arrays.toString(parts.toArray()));
         }
 
         public void linkSchematicNodes() {

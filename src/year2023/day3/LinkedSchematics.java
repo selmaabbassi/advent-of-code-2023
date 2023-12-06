@@ -56,6 +56,10 @@ public class LinkedSchematics {
                 schematics.forEach(node -> parts.addAll(node.findParts()));
         }
 
+        public List<Integer> findGearParts() {
+                return schematics.stream().flatMap(node -> node.findGearParts().stream()).toList();
+        }
+
         public List<Integer> getParts() {
                 return parts;
         }

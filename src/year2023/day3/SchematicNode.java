@@ -38,6 +38,20 @@ public class SchematicNode {
                 return parts;
         }
 
+        public List<Integer> findGearParts() {
+                List<Integer> gearParts = new ArrayList<>();
+
+                for (int i = 0; i < list.length; i++) {
+                        if (list[i] == '*') {
+                                System.out.println("found gear * at index " + i);
+                                List<Integer> adjacentParts = findAdjacentParts(i);
+                                gearParts.add(adjacentParts.get(0) * adjacentParts.get(1));
+                        }
+                }
+
+                return gearParts;
+        }
+
         private boolean isAdjacentToSymbol(int index) {
                 //first node
                 if (previous == null) {
@@ -70,18 +84,83 @@ public class SchematicNode {
                 return isSymbolInAdjacentNode(index, next);
         }
 
-        private boolean isSymbolInAdjacentNode(int index, SchematicNode previous) {
+        private boolean isSymbolInAdjacentNode(int index, SchematicNode node) {
                 if (index == 0) { // only check adjacent on right side if first element
-                        return isSymbol(previous.list[index]) || isSymbol(previous.list[index + 1]);
+                        return isSymbol(node.list[index]) || isSymbol(node.list[index + 1]);
                 } else if (index == list.length - 1) { // only check adjacent on left side if last element
-                        return isSymbol(previous.list[index - 1]) || isSymbol(previous.list[index]);
+                        return isSymbol(node.list[index - 1]) || isSymbol(node.list[index]);
                 } else {
-                        return isSymbol(previous.list[index - 1]) || isSymbol(previous.list[index]) || isSymbol(previous.list[index + 1]);
+                        return isSymbol(node.list[index - 1]) || isSymbol(node.list[index]) || isSymbol(node.list[index + 1]);
                 }
         }
 
         private boolean isSymbol(char c) {
                 return !Character.isDigit(c) && c != '.';
+        }
+
+        private List<Integer> findAdjacentParts(int index) {
+                List<Integer> adjacentParts = new ArrayList<>();
+
+                /**
+                 * 1 * 1        1 2 3           . . .
+                 * 1 2 3        2 * 2           1 2 3
+                 * . . .        2 2 3           2 * 1
+                 */
+
+                //first node
+                if (previous == null) {
+                        adjacentParts.add(getAdjacentPart(index, this));
+                        adjacentParts.add(getAdjacentPart(index, next));
+                } else if (next == null) { //last node
+                        adjacentParts.add(getAdjacentPart(index, this));
+                        adjacentParts.add(getAdjacentPart(index, previous));
+                } else {
+                        adjacentParts.add(getAdjacentPart(index, previous));
+                        adjacentParts.add(getAdjacentPart(index, this));
+                        adjacentParts.add(getAdjacentPart(index, next));
+                }
+
+                return adjacentParts;
+        }
+
+        private int getAdjacentPart(int index, SchematicNode node) {
+                if (index == 0) { //first element: only check right adjacent
+                        if (Character.isDigit(node.list[index + 1])) {
+                                return getRightPart(index, node);
+                        }
+                } else if (index == node.list.length - 1) { // last element: only check left adjacent
+                        if (Character.isDigit(node.list[index - 1])) {
+                                return getLeftPart(index, node);
+                        }
+                } else {
+                        if (Character.isDigit(node.list[index + 1])) {
+                                return getRightPart(index, node);
+                        }
+                        if (Character.isDigit(node.list[index - 1])) {
+                                return getLeftPart(index, node);
+                        }
+                }
+                return -1;
+        }
+
+        private int getRightPart(int index, SchematicNode node) {
+                StringBuilder builder = new StringBuilder();
+
+                for (int i = index + 1; Character.isDigit(node.list[i]); i++) {
+                        builder.append(node.list[i]);
+                }
+
+                return Integer.parseInt(builder.toString());
+        }
+
+        private int getLeftPart(int index, SchematicNode node) {
+                StringBuilder builder = new StringBuilder();
+
+                for (int i = index - 1; i > -1 && Character.isDigit(node.list[i]); i--) {
+                        builder.append(node.list[i]);
+                }
+
+                return Integer.parseInt(builder.toString());
         }
 
         public void print() {

@@ -5,7 +5,6 @@ public enum CardType {
     ACE("A", 14),
     KING("K", 13),
     QUEEN("Q", 12),
-    JACK("J", 11),
     TEN("T", 10),
     NINE("9", 9),
     EIGHT("8", 8),
@@ -14,7 +13,8 @@ public enum CardType {
     FIVE("5", 5),
     FOUR("4", 4),
     THREE("3", 3),
-    TWO("2", 2);
+    TWO("2", 2),
+    JOKER("J", 1);
 
     private final String value;
     private final int rank;

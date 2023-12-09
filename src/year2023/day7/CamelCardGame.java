@@ -10,7 +10,7 @@ public class CamelCardGame {
     public CamelCardGame(List<Hand> hands) {
         this.hands = hands;
         this.sorter = new BubbleSorter();
-        
+
         remapJokers();
         sortCards();
     }

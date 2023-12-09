@@ -12,15 +12,14 @@ import java.util.stream.Collectors;
 public class Hand implements Comparable<Hand> {
 
     List<Card> cards;
+    List<Card> remappedCards;
     int bet;
     HandType handType;
-    Map<CardType, Long> occurrences;
 
     public Hand(List<Card> cards, int bet) {
         this.cards = cards;
         this.bet = bet;
-        this.occurrences = getOccurrences();
-        this.handType = defineHandType();
+        this.handType = defineHandType(getOccurrences(cards));
     }
 
     public List<Card> getCards() {
@@ -31,21 +30,18 @@ public class Hand implements Comparable<Hand> {
         return handType;
     }
 
-    public Map<CardType, Long> getOccurrences() {
+    private Map<CardType, Long> getOccurrences(List<Card> cards) {
         return cards.stream()
                 .collect(Collectors.groupingBy(Card::getCardType, Collectors.counting()));
     }
 
     public void remapJokers() {
         JokerMapper mapper = new JokerMapper();
-        mapper.mapJokersToHigherRank(this);
-
-        //update occurrences and handtype
-        this.occurrences = getOccurrences();
-        this.handType = defineHandType();
+        this.remappedCards = mapper.remapJokerCards(this);
+        this.handType = defineHandType(getOccurrences(remappedCards));
     }
 
-    public HandType defineHandType() {
+    public HandType defineHandType(Map<CardType, Long> occurrences) {
         boolean five_of_a_kind = occurrences.values().stream().anyMatch(count -> count == 5);
         boolean four_of_a_kind = occurrences.values().stream().anyMatch(count -> count == 4);
         boolean three_of_a_kind = occurrences.values().stream().anyMatch(count -> count == 3);
@@ -80,7 +76,7 @@ public class Hand implements Comparable<Hand> {
     }
 
     public Optional<CardType> findCardTypeWithOccurrences(long desiredOccurrences) {
-        for (Map.Entry<CardType, Long> entry : occurrences.entrySet()) {
+        for (Map.Entry<CardType, Long> entry : getOccurrences(cards).entrySet()) {
             if (entry.getValue() == desiredOccurrences) {
                 return Optional.of(entry.getKey());
             }
@@ -94,7 +90,7 @@ public class Hand implements Comparable<Hand> {
         }
         List<CardType> pairs = new ArrayList<>();
 
-        for (Map.Entry<CardType, Long> entry : occurrences.entrySet()) {
+        for (Map.Entry<CardType, Long> entry : getOccurrences(cards).entrySet()) {
             if (entry.getValue() == 2) {
                 pairs.add(entry.getKey());
             }
@@ -120,6 +116,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     public void print() {
-        System.out.println(Arrays.toString(cards.toArray()) + " : " + bet + " : " + handType.toString());
+        System.out.println("Original Hand: " + Arrays.toString(cards.toArray()) + " : " + bet + " : " + handType.toString());
+        System.out.println("Remapped Hand: " + Arrays.toString(remappedCards.toArray()) + " : " + bet + " : " + handType.toString());
+        System.out.println("------------------------------------");
     }
 }

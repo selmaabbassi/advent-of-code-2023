@@ -7,48 +7,69 @@ import java.util.Objects;
 
 public class Card {
 
-        List<Integer> winningCards;
-        List<Integer> playerCards;
+    int cardId;
+    List<Integer> winningCards;
+    List<Integer> playerCards;
+    List<Integer> copyIds;
 
-        public Card(String line) {
-                winningCards = new ArrayList<>();
-                playerCards = new ArrayList<>();
 
-                initateCard(line);
+    public Card(String line) {
+        winningCards = new ArrayList<>();
+        playerCards = new ArrayList<>();
+
+        initateCard(line);
+    }
+
+    public int getCardId() {
+        return cardId;
+    }
+
+    private void initateCard(String line) {
+        String[] split = line.split("\\|");
+        String playerCard = split[0].trim();
+        String winningCard = split[1].trim();
+
+        appendPlayerCard(playerCard);
+        appendWinningCard(winningCard);
+
+        setCopyIds();
+    }
+
+    public List<Integer> getCopyIds() {
+        return copyIds;
+    }
+
+    private void appendWinningCard(String line) {
+        String[] cards = line.split("\\s+");
+        Arrays.stream(cards).forEach(c -> winningCards.add(Integer.parseInt(c)));
+    }
+
+    private void appendPlayerCard(String line) {
+        String[] split = line.split(":");
+        String[] cardIdAsString = split[0].split("\\s+");
+        this.cardId = Integer.parseInt(cardIdAsString[1].trim());
+        String[] cards = split[1].trim().split("\\s+");
+
+        Arrays.stream(cards).forEach(c -> {
+            if (!Objects.equals(c, " ")) {
+                playerCards.add(Integer.parseInt(c));
+            }
+        });
+    }
+
+    private void setCopyIds() {
+        copyIds = new ArrayList<>();
+        List<Integer> matchingNumbers = playerCards.stream().filter(pc -> winningCards.contains(pc)).toList();
+
+        for (int i = 1; i <= matchingNumbers.size(); i++) {
+            copyIds.add(cardId + i);
         }
+    }
 
-        private void initateCard(String line) {
-                String[] split = line.split("\\|");
-                String playerCard = split[0].trim();
-                String winningCard = split[1].trim();
-
-                appendPlayerCard(playerCard);
-                appendWinningCard(winningCard);
-        }
-
-        private void appendWinningCard(String line) {
-                String[] cards = line.split("\\s+");
-                Arrays.stream(cards).forEach(c -> winningCards.add(Integer.parseInt(c)));
-        }
-
-        private void appendPlayerCard(String line) {
-                String[] split = line.split(":");
-                String[] cards = split[1].trim().split("\\s+");
-                Arrays.stream(cards).forEach(c -> {
-                        if (!Objects.equals(c, " ")) {
-                                playerCards.add(Integer.parseInt(c));
-                        }
-                });
-        }
-
-        public List<Integer> findMatchingNumbers() {
-                return playerCards.stream().filter(pc -> winningCards.contains(pc)).toList();
-        }
-
-        @Override
-        public String toString() {
-                return "Player Cards: " + Arrays.toString(playerCards.toArray()) +
-                                " Winning Cards: " + Arrays.toString(winningCards.toArray()) +
-                                " Matching Cards: " + Arrays.toString(findMatchingNumbers().toArray());
-        }
+    @Override
+    public String toString() {
+        return "Player Cards: " + "ID: " + cardId + " : " + Arrays.toString(playerCards.toArray()) +
+                " Winning Cards: " + Arrays.toString(winningCards.toArray()) +
+                " Copies Cards: " + Arrays.toString(copyIds.toArray());
+    }
 }

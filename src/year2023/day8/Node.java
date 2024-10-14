@@ -23,6 +23,15 @@ public class Node {
         return right;
     }
 
+    public String getDestinationLastChar() {
+        return String.valueOf(destination.charAt(destination.length() - 1));
+    }
+
+    @Override
+    public String toString() {
+        return "Node: " + destination + " = " + left + "," + right;
+    }
+
     public void print() {
         System.out.println(destination + " = " + left + "," + right);
     }

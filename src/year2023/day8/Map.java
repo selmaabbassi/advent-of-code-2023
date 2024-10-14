@@ -27,22 +27,21 @@ public class Map {
         this.nodes.add(node);
     }
 
-    public int calculateSteps() {
-        Queue<Node> nodes = new LinkedList<>();
+    public int calculateStepsPart1() {
+        Queue<Node> queue = new LinkedList<>();
 
-        nodes.offer(getFirstNode());
+        queue.offer(getFirstNode());
 
         int steps = 0;
         int counter = 0;
 
-        while (!nodes.isEmpty()) {
-            int nodesInQueue = nodes.size();
+        while (!queue.isEmpty()) {
+            int nodesInQueue = queue.size();
 
             for (int i = 0; i < nodesInQueue; i++) {
-                Node currentNode = nodes.poll();
+                Node currentNode = queue.poll();
 
                 if (currentNode.getDestination().equals("ZZZ")) {
-                    System.out.println("ZZZ found after " + steps + " steps");
                     return steps;
                 }
 
@@ -53,9 +52,9 @@ public class Map {
                 String instruction = instructions.get(counter);
 
                 if (instruction.equals("L")) {
-                    nodes.add(getNextNode(currentNode.getLeft()));
+                    queue.add(getNextNode(currentNode.getLeft()));
                 } else {
-                    nodes.add(getNextNode(currentNode.getRight()));
+                    queue.add(getNextNode(currentNode.getRight()));
                 }
                 counter++;
             }
@@ -63,6 +62,47 @@ public class Map {
         }
 
         return -1;
+    }
+
+    public int calculateStepsPart2() {
+
+        List<Node> startingNodes = getTwoFirstNodes();
+        System.out.println("Starting nodes: " + startingNodes.get(0).toString() + " " + startingNodes.get(1).toString());
+        Queue<Node> queue = new LinkedList<>(startingNodes);
+
+        int steps = 0;
+        int counter = 0;
+
+        while (!queue.isEmpty()) {
+            Node currentNode = queue.poll();
+
+            if (currentNode.getDestinationLastChar().equals("Z")) {
+                continue;
+            }
+
+            if (counter > instructions.size() - 1) {
+                counter = 0;
+            }
+
+            String instruction = instructions.get(counter);
+
+            if (instruction.equals("L")) {
+                queue.add(getNextNode(currentNode.getLeft()));
+            } else {
+                queue.add(getNextNode(currentNode.getRight()));
+            }
+
+
+            if (queue.stream().allMatch(node -> node.getDestinationLastChar().equals("Z"))) {
+                return steps;
+            }
+            
+            counter++;
+            steps++;
+        }
+
+        return -1;
+
     }
 
     private Node getFirstNode() {
@@ -75,5 +115,13 @@ public class Map {
         return this.nodes.stream()
                 .filter(node -> node.getDestination().equals(destination))
                 .findFirst().orElseThrow();
+    }
+
+    private List<Node> getTwoFirstNodes() {
+        List<Node> nodes = this.nodes.stream()
+                .filter(node -> node.getDestinationLastChar().equals("A")).toList();
+
+        return List.of(nodes.get(0), nodes.get(1));
+
     }
 }

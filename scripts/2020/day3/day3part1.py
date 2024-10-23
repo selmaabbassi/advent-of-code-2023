@@ -18,7 +18,7 @@ class TreeFinder:
         if road[index] == ".":
             return 0
         if road[index] == "#":
-            return 1                
+            return 1
         
 if __name__ == "__main__":
     with open('day3.txt', 'r') as file:

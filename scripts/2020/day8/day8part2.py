@@ -1,14 +1,17 @@
-def calculate():
+def calculate(tmp):
     counter = 0
     handledIndexes = []
     i = 0
 
-    while i < len(instructions):
+    while i <= len(tmp):
         if i in handledIndexes:
-            return counter
+            return counter, i
         
+        if i == len(tmp):
+            return counter, i
+
+        instruction = tmp[i]
         handledIndexes.append(i)
-        instruction = instructions[i]
         
         if "acc" in instruction:
             acc = instruction.split(" ")
@@ -28,12 +31,32 @@ def calculate():
         else:
             i+=1
 
+def toggleInstruction(index, tmp):
+    if "nop" in tmp[index]:
+        tmp[index] = tmp[index].replace("nop", "jmp")
+    elif "jmp" in tmp[index]:
+        tmp[index] = tmp[index].replace("jmp", "nop")
+
+def testExecute():
+    i = 0
+    
+    while i < len(instructions):
+        tmp = instructions.copy()
+        if "jmp" in instructions[i] or "nop" in instructions[i]:
+            toggleInstruction(i, tmp)
+            counter, endIndex = calculate(tmp)
+
+            if(endIndex == len(instructions)):
+                return counter
+        i+=1
+
+
 
 if __name__ == "__main__":
     instructions = []
-    with open('tst.txt', 'r') as file:
+    with open('day8.txt', 'r') as file:
         for line in file:
             instructions.append(line.strip())
 
-    count = calculate()
+    count = testExecute()
     print(f"Accumulated number is {count}")

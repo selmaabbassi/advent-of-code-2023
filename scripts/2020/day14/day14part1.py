@@ -1,32 +1,86 @@
 import re
+from typing import List
 
 
-def get_binary(value):
-    return format(value, "036b")
+class InstructionBlock:
+    def __init__(self, mask):
+        self.mask = mask
+        self.instructions = []
+
+    def add_instruction(self, address, value):
+        self.instructions.append({"address": address, "value": value})
+
+    def get_mask(self):
+        return self.mask
+
+    def get_instructions(self):
+        return self.instructions
+
+    def print(self):
+        print(f"Mask: {self.mask}, Instructions: {self.instructions}")
 
 
-def calculate(mask, instructions):
-    for instruction in instructions:
-        val = instruction["value"]
-        binary = get_binary(val)
-        print(f"Binary value of {val} is {binary}")
+class Interpreter:
+    def __init__(self, blocks: List[InstructionBlock]):
+        self.memory = {}
+        self.blocks = blocks
+
+    def interpret(self):
+        for block in self.blocks:
+            for instruction in block.get_instructions():
+                self.__update_memory(block.get_mask(), instruction)
+
+        return self.memory
+
+    def __update_memory(self, mask, instruction):
+        address = instruction["address"]
+        binary_value = self.__get_binary(instruction["value"])
+        masked_value = self.__get_masked_value(mask, binary_value)
+        self.memory.update({address: masked_value})
+
+    def __get_binary(self, value):
+        return format(value, "036b")
+
+    def __get_masked_value(self, mask, binary_value):
+        mask_chars = list(mask)
+        binary_value_chars = list(binary_value)
+
+        for i in range(len(binary_value_chars)):
+            if mask_chars[i] == "X":
+                continue
+            else:
+                binary_value_chars[i] = mask_chars[i]
+
+        masked_value = "".join(binary_value_chars)
+
+        return int(masked_value, 2)
 
 
 if __name__ == "__main__":
-    instructions = []
-    mask = ""
-    with open("tst.txt", "r") as file:
-        for line in file:
-            if line.__contains__("mask"):
-                mask = line.split("=")[1].strip()
-            else:
-                groups = re.match(r"\D+(\d)\D+(\d+)", line).groups()
-                instructions.append(
-                    {"position": int(groups[0]), "value": int(groups[1])}
-                )
+    with open("day14.txt") as f:
+        lines = f.read().splitlines()
 
-    print(f"mask: {mask}, instructions: {instructions}")
-    calculate(mask, instructions)
+blocks = []
+current_block = None
 
-    ##Idea.. create a class Instructions that can take each block of mem instructions to it's specific mask
-    ## OBS you will need a global list of positions for the values
+for line in lines:
+    if line.startswith("mask"):
+        mask = line.split(" = ")[1]
+        current_block = InstructionBlock(mask)
+        blocks.append(current_block)
+    elif line.startswith("mem"):
+        match = re.match(r"mem\[(\d+)\] = (\d+)", line)
+        if match:
+            address, value = match.groups()
+            current_block.add_instruction(int(address), int(value))
+
+# for block in blocks:
+# block.print()
+
+interpreter = Interpreter(blocks)
+memory = interpreter.interpret()
+
+result = sum(value for value in memory.values())
+
+print(f"Memory: {memory}")
+print(f"Answer: {result}")

@@ -11,15 +11,9 @@ if __name__ == "__main__":
     print(f"List 1: {list_one}")
     print(f"List 2: {list_two}")
 
-    list_one.sort()
-    list_two.sort()
-
-    print(f"List 1 sorted: {list_one}")
-    print(f"List 2 sorted: {list_two}")
-
-    total_distance = 0
+    similarity_score = 0
     for i in range(len(list_one)):
-        diff = abs(list_two[i] - list_one[i])
-        total_distance += diff
+        multiplier = list_two.count(list_one[i])
+        similarity_score += list_one[i] * multiplier
 
-    print(f"The total distance between left and right list is: {total_distance}")
+    print(f"The similarity score of left and right list is: {similarity_score}")
